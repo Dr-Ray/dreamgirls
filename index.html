@@ -29,6 +29,9 @@
             background-attachment: fixed;
             background-repeat: no-repeat;
         }
+        .pointer {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -47,7 +50,7 @@
             </div>
         </div><!-- /preloader -->
 
-        <header class="header h-16 items-center flex flex-column">
+        <header class="header h-16 items-center flex flex-row ">
             <nav class="flex flex-row justify-between w-full px-4">
                 <div class="logo">
                     Logo
@@ -69,7 +72,7 @@
                         <a href="#" class="text-base">Play Games</a>
                     </li>
                 </ul>
-                <div class="flex flex-row gap-3">
+                <div class="flex flex-row gap-4 items-center">
                     <div class="pointer" data-modal-target="authentication-modal"
                         data-modal-toggle="authentication-modal">
                         <i class="fa fa-user-circle"></i> <span class="text-base">Login</span>
@@ -77,12 +80,39 @@
                     <div class="hidden md:block">
                         <i class="fa fa-language"></i> <span class="text-base">Eng (UK)</span>
                     </div>
-                    <div class="md:hidden">
+                    <div class="md:hidden text-2xl pointer" id="open-sidebar">
                         &#9776;
                     </div>
                 </div>
             </nav>
         </header>
+        <div id="sidebar" class="md:hidden overflow-hidden visible z-50 h-full fixed w-72 bg-gray-500 top-0 right-[-300px] transition-all ">
+            <ul class="h-full px-3 flex flex-col gap-4 bg-red-400 py-4">
+                <div class="mb-10">
+                    <h3 class="text-2xl font-bold">DreamGirls</h3>
+                </div>
+                <li>
+                    <a href="#" class="text-base hover:text-blue-500">Create Your Avatar</a>
+                </li>
+                <li>
+                    <a href="#" class="text-base hover:text-blue-500">Explore Worlds</a>
+                </li>
+                <li>
+                    <a href="#" class="text-base hover:text-blue-500">Shop Fashion</a>
+                </li>
+                <li>
+                    <a href="#" class="text-base hover:text-blue-500">Join the community</a>
+                </li>
+                <li>
+                    <a href="#" class="text-base hover:text-blue-500">Play Games</a>
+                </li>
+                <li>
+                    <a href="#" class="text-base">Language</a>
+                </li>
+            </ul>
+        </div>
+        <div class="fixed z-10 h-0 w-0 top-0" id="cl-sidebar"></div>
+
         <div class="cont hero-banner relative" style="height: 90vh;">
             <div class="relative h-full md:flex md:flex-row justify-between items-center">
                 <div class="md:w-1/2 md:ml-20 pl-4" style="text-wrap: wrap;">
@@ -360,6 +390,20 @@
 
         // let scene = document.getElementById('scene')
         // let parallax = new Parallax(scene) 
+
+        $("#open-sidebar").on('click', (e) => {
+            $('#sidebar').toggleClass('right-[-300px]');
+            $('#sidebar').toggleClass('right-0');
+
+            $('#cl-sidebar').addClass('h-full w-full');
+        });
+
+        $('#cl-sidebar').on('click', (e)=> {
+            $('#sidebar').toggleClass('right-[-300px]');
+            $('#sidebar').toggleClass('right-0');
+
+            $('#cl-sidebar').removeClass('h-full w-full');
+        });
 
         var wind = $(window);
         var sticky = $("#header-sticky");

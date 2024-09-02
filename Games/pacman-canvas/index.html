@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacman | DreamGirls</title>
+    <style>
+        *, html {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: black;
+            height: 100vh;
+        }
+        .score-panel {
+            margin: 20px 10px;
+            font-size: larger;
+            font-weight: bold;
+            font-family: sans-serif;
+            color: #fff;
+        }
+    </style> 
+</head>
+<body>
+    <div class="score-panel">
+        Score: <span id="score">0</span>
+    </div>
+    <canvas id="canvas"></canvas>
+    <script src="./index.js"></script>
+</body>
+</html>

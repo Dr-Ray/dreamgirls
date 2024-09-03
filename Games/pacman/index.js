@@ -389,7 +389,6 @@ function animate(timestamp) {
                 })
             ) {
                 collsions.push('right');
-                ghost.velocity.x = 0;
             }
 
             if (

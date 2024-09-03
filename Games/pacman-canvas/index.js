@@ -108,19 +108,19 @@ class PowerUp {
 
 const map = [
     ['0', '0', '0', '0', '0','0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
-    ['0', '.', '.', '.', '.','.', '0', '.', '.', '.', '.', '.', '.', '0', '.', '.', '.', '.', '.', '.', '.', 'p', '0'],
-    ['0', '.', '.', '.', '.','p', '0', '.', '.', '.', '.', '.', '.', '0', '.', '.', '.', '.', '.', '.', '.', '.', '0'],
-    ['0', '.', '.', '.', '.','0', '0', '0', '.', '.', '.', '.', '0', '0', '0', '.', '.', '.', '.', '.', '.', '.', '0'],
-    ['0', '.', '.', '.', '.','.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '0'],
-    ['0', '0', '.', '.', '.','.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '0', '.', '.', '.', '0', '0'],
-    ['-', '-', '.', '.', '.','.', '.', '.', '.', '0', '0', '.', '.', '0', '0', '.', '.', '0', '.', '.', '.', '-', '-'],
-    ['-', '-', '.', '.', '.','.', '.', '.', '.', '0', '.', '.', '.', '.', '0', '.', '.', '0', '0', '0', '.', '-', '-'],
-    ['-', '-', '.', '.', '0','0', '0', '.', '.', '0', '.', '.', '.', '.', '0', '.', '.', '0', '.', '.', '.', '-', '-'],
-    ['0', '0', '.', '.', '.','0', '.', '.', '.', '0', '0', '0', '0', '0', '0', '.', '.', '0', '.', '.', '.', '0', '0'],
-    ['0', '.', '.', '.', '.','0', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '0'],
-    ['0', '.', '.', '.', '.','.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '0'],
-    ['0', '.', '.', '0', '.','.', '.', '.', '0', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '0', '.', '.', '0'],
-    ['0', 'p', '.', '0', '.','.', '.', '.', '0', '.', '.', '.', 'p', '.', '.', '.', '.', '.', '.', '0', '.', '.', '0'],
+    ['0', '1', '1', '1', '1','1', '0', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '2', '0'],
+    ['0', '1', '1', '1', '1','2', '0', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '0'],
+    ['0', '1', '1', '1', '1','0', '0', '0', '1', '1', '1', '1', '0', '0', '0', '1', '1', '1', '1', '1', '1', '1', '0'],
+    ['0', '1', '1', '1', '1','1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0'],
+    ['0', '0', '1', '1', '1','1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '0', '0'],
+    ['3', '3', '1', '1', '1','1', '1', '1', '1', '0', '0', '1', '1', '0', '0', '1', '1', '0', '1', '1', '1', '3', '3'],
+    ['3', '3', '1', '1', '1','1', '1', '1', '1', '0', '1', '1', '1', '1', '0', '1', '1', '0', '0', '0', '1', '3', '3'],
+    ['3', '3', '1', '1', '0','0', '0', '1', '1', '0', '1', '1', '1', '1', '0', '1', '1', '0', '1', '1', '1', '3', '3'],
+    ['0', '0', '1', '1', '1','0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1', '1', '0', '1', '1', '1', '0', '0'],
+    ['0', '1', '1', '1', '1','0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0'],
+    ['0', '1', '1', '1', '1','1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0'],
+    ['0', '1', '1', '0', '1','1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '0'],
+    ['0', '2', '1', '0', '1','1', '1', '1', '0', '1', '1', '1', '2', '1', '1', '1', '1', '1', '1', '0', '1', '1', '0'],
     ['0', '0', '0', '0', '0','0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
 ];
 
@@ -130,11 +130,11 @@ const powerUps = [];
 const ghosts = [
     new Ghost({
         position:{
-            x:(Boundary.width * 10) + Boundary.width * 0.5,
-            y:(Boundary.height * 7) + Boundary.height * 0.5
+            x:Boundary.width * 10 + Boundary.width * 0.5,
+            y:Boundary.height * 4 + Boundary.height * 0.5
         },
         velocity:{
-            x:1,
+            x:2,
             y:0
         }
     })
@@ -153,7 +153,7 @@ map.forEach((row, i) => {
                     })
                 );
                 break;
-            case '.':
+            case '1':
                 pellets.push(
                     new Pellet({
                         position:{
@@ -163,7 +163,7 @@ map.forEach((row, i) => {
                     })
                 );
                 break;
-            case 'p':
+            case '2':
                 powerUps.push(
                     new PowerUp({
                         position:{
@@ -204,50 +204,13 @@ const keys = {
     }
 }
 
-let lastKey = '';
-window.addEventListener('keydown', ({key}) => {
-    // console.log(key)
-    switch(key) {
-        case 'ArrowUp':
-            keys.up.pressed = true;
-            lastKey = 'up'
-            break;
-        case 'ArrowLeft':
-            keys.left.pressed = true;
-            lastKey = 'left'
-            break;
-        case 'ArrowRight':
-            keys.right.pressed = true;
-            lastKey = 'right'
-            break;
-        case 'ArrowDown':
-            keys.down.pressed = true;
-            lastKey = 'down'
-            break;
-    }
-});
-window.addEventListener('keyup', ({key}) => {
-    switch(key) {
-        case 'ArrowUp':
-            keys.up.pressed = false;
-            break;
-        case 'ArrowLeft':
-            keys.left.pressed = false;
-            break;
-        case 'ArrowRight':
-            keys.right.pressed = false;
-            break;
-        case 'ArrowDown':
-            keys.down.pressed = false;
-            break;
-    }
-});
 function circleCollision({circle, rect}) {
+    const padding = (Boundary.width * 0.5) - circle.radius - 1;
     return (
-        circle.position.y - circle.radius + circle.velocity.y <= rect.position.y + rect.height &&
-        circle.position.x + circle.radius + circle.velocity.x >= rect.position.x &&
-        circle.position.y + circle.radius + circle.velocity.y >=rect.position.y &&
-        circle.position.x - circle.radius + circle.velocity.x <= rect.position.x + rect.width
+        circle.position.y - circle.radius + circle.velocity.y <= rect.position.y + rect.height  &&
+        circle.position.x + circle.radius + circle.velocity.x >= rect.position.x  &&
+        circle.position.y + circle.radius + circle.velocity.y >=rect.position.y  &&
+        circle.position.x - circle.radius + circle.velocity.x <= rect.position.x + rect.width 
     )
 }
 let lastTime = 0;
@@ -255,6 +218,7 @@ function animate(timestamp) {
     lastTime = timestamp - lastTime;
     lastTime = timestamp;
     c.clearRect(0, 0, canvas.width, canvas.height);
+
     if(keys.up.pressed && lastKey == 'up') {
         player.velocity.x = 0;
         for(let i=0;i<boundaries.length; i+=1){
@@ -305,7 +269,8 @@ function animate(timestamp) {
             {
                 player.velocity.x = 0;
                 break;
-            }else {
+            }
+            else {
                 player.velocity.x = -3;
             }
         }
@@ -348,11 +313,6 @@ function animate(timestamp) {
         }
     }
 
-    if(pellets.length == 50) {
-        console.log("Chase....>>>>")
-        sirenSound.playbackRate += 0.1;
-    }
-
     for(let i=powerUps.length-1; 0<=i; i--) {
         const powerUp = powerUps[i];
         powerUp.draw();
@@ -377,10 +337,10 @@ function animate(timestamp) {
         }
     }); 
     player.update();
-
     for(let i=ghosts.length-1; 0<=i; i--) {
         const ghost = ghosts[i];
         ghost.update();
+        
         if(ghost.position.x + ghost.radius + 0.01 < 0) {
             ghost.position.x = canvas.width - ghost.radius;
         }else if(ghost.position.x + ghost.radius + 0.01 > canvas.width) {
@@ -399,6 +359,7 @@ function animate(timestamp) {
                 })
             ) {
                 collsions.push('right');
+                ghost.velocity.x = 0;
             }
 
             if(
@@ -415,7 +376,7 @@ function animate(timestamp) {
             }
 
             if(
-                !collsions.includes('top') &&
+                !collsions.includes('up') &&
                 circleCollision({
                     circle: {...ghost, velocity: {
                         x:0,
@@ -424,7 +385,7 @@ function animate(timestamp) {
                     rect: boundary
                 })
             ) {
-                collsions.push('top');
+                collsions.push('up');
             }
 
             if(
@@ -440,15 +401,15 @@ function animate(timestamp) {
                 collsions.push('down');
             }
         });
+        
         if(collsions.length > ghost.prevCol.length){
             ghost.prevCol = collsions;
         }
 
-        // console.log(collsions);
-        // console.log('prev',ghost.prevCol )
+        // console.log(collsions)
+        console.log(ghost.prevCol)
 
-        if(JSON.stringify(collsions) != JSON.stringify(ghost.prevCol)) {
-            console.log("Sed")
+        if(JSON.stringify(collsions) !== JSON.stringify(ghost.prevCol)) {
             if(ghost.velocity.x > 0) {
                 ghost.prevCol.push('right');
             }
@@ -466,7 +427,7 @@ function animate(timestamp) {
                 return !collsions.includes(collision);
             });
 
-            // console.log({pathways})
+            console.log({pathways});
 
             const direction = pathways[Math.floor(Math.random() * pathways.length)];
             switch(direction) {
@@ -487,18 +448,58 @@ function animate(timestamp) {
                     ghost.velocity.y = 0;
                     break;
             }
+            // console.log({pathways});
             ghost.prevCol = [];
-            // console.log(ghost.prevCol);
         }
     }
     // ghosts.forEach(ghost => {
         
     // }); 
 
-    requestAnimationFrame(animate);
+    // requestAnimationFrame(animate);
 }
+setInterval(()=> {
+    animate(0);
+}, 100);
 
-animate(0);
+
+let lastKey = '';
+window.addEventListener('keydown', ({key}) => {
+    switch(key) {
+        case 'ArrowUp':
+            keys.up.pressed = true;
+            lastKey = 'up'
+            break;
+        case 'ArrowLeft':
+            keys.left.pressed = true;
+            lastKey = 'left'
+            break;
+        case 'ArrowRight':
+            keys.right.pressed = true;
+            lastKey = 'right'
+            break;
+        case 'ArrowDown':
+            keys.down.pressed = true;
+            lastKey = 'down'
+            break;
+    }
+});
+window.addEventListener('keyup', ({key}) => {
+    switch(key) {
+        case 'ArrowUp':
+            keys.up.pressed = false;
+            break;
+        case 'ArrowLeft':
+            keys.left.pressed = false;
+            break;
+        case 'ArrowRight':
+            keys.right.pressed = false;
+            break;
+        case 'ArrowDown':
+            keys.down.pressed = false;
+            break;
+    }
+});
 
 function startGame() {
     beginSound.play();

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .r-app {
+            height: 100vh;
+            width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .w-600 {
+            width: 600px;
+        }
+        .h-full {
+            height: 100%;
+        }
+        .m-auto {
+            margin: auto;
+        }
+        .bg1{
+            background-image: linear-gradient(#fbebd2,#fbebd2, rgb(141 107 98));
+        }
+        .bg2{
+            background-color: #e7e4dd;
+        }
+        .bg3{
+            background-image: linear-gradient(#f2d7c5, #f2d7c5,#e6b998,#e6b998, #e6b998);
+        }
+        .bg4{
+            background-image: linear-gradient(#ffdb96,#a18b60, #4d3a27);
+        }
+        .ch-bg {
+            background-image: url('./images/room12.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 600px;
+            height:350px;
+            position: relative;
+        }
+        .ch-bg-2 {
+            background-image: url('./images/room8.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 600px;
+            height:350px;
+            position: relative;
+            
+        }
+        .ch-bg-3 {
+            background-image: url('./images/room4-2.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 600px;
+            height:350px;
+            position: relative;
+        }
+        .ch-bg-4 {
+            background-image: url('./images/room2.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 600px;
+            height:350px;
+            position: relative;
+        }
+        img {
+            height: 230px;
+            width: auto;
+            position: absolute;
+            left:13rem;
+            bottom:115px;
+        }
+        .ch-bg-2 img {
+            height: 300px;
+            bottom:90px;
+            left:10rem;
+        }
+        .ch-bg-3 img {
+            height: 250px;
+            bottom:90px;
+            left:12rem;
+        }
+        .ch-bg-4 img {
+            height: 300px;
+            bottom:80px;
+            left:13rem;
+        }
+        .sldr {
+            transform:translateX(1000px);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: all ease .5s;
+            z-index: -1;
+        }
+        .active {
+            transform:translateX(0);
+            z-index: 9;
+        }
+        #prev, #next {
+            cursor: pointer;
+            font-size: x-large;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="r-app">
+        <div class="w-600 m-auto" style="height:100%;overflow: hidden;position: relative;">
+            <div class="m-auto" style="display: flex;">
+                <div class="sldr ch-bg">
+                    <img src="./images/WhatsApp_Image_2024-07-20_at_07.25.41-removebg-preview.png" alt="">
+                </div>
+                <div class="sldr ch-bg-2">
+                    <img src="./images/WhatsApp_Image_2024-07-20_at_07.25.41-removebg-preview.png" alt="">
+                </div>
+                <div class="sldr ch-bg-3">
+                    <img src="./images/WhatsApp_Image_2024-07-20_at_07.25.41-removebg-preview.png" alt="">
+                </div>
+                <div class="sldr ch-bg-4">
+                    <img src="./images/WhatsApp_Image_2024-07-20_at_07.25.41-removebg-preview.png" alt="">
+                </div>
+            </div>
+        </div>
+        <div style="position: absolute;top:0; bottom:0;width: 100%;">
+            <div class="w-600 m-auto" style="height:100%;display: flex;justify-content: space-between;align-items: center;">
+                <span id="prev" style="z-index: 999;"><</span>
+                <span id="next" style="z-index: 999;">></span>
+            </div>
+        </div>
+    </div>
+    <script>
+        const sliders = document.querySelectorAll('.sldr');
+        const prev = document.querySelector('#prev');
+        const next = document.querySelector('#next');
+        let cur = 0;
+
+        sliders[0].classList.add('active');
+        prev.onclick = (e) => {
+            sliders[cur].classList.toggle('active');
+            cur -=1;
+            if(cur < 0) {
+                cur = sliders.length - 1;
+            }
+            sliders[cur].classList.add('active');
+        }
+
+        next.onclick = (e) => {
+            sliders[cur].classList.toggle('active');
+            cur +=1;
+            if(cur > (sliders.length -1)) {
+                cur = 0;
+            }
+            sliders[cur].classList.add('active');
+        }
+    </script>
+</body>
+</html>

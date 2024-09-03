@@ -1,57 +1,187 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../utilities/css/fontawesome-all.min.css" />
+    <link rel="stylesheet" href="../utilities/css/aos.css" />
+    <link rel="stylesheet" href="../utilities/css/flaticon.css" />
+    <link rel="stylesheet" href="../utilities/css/slick.css" />
+    <link rel="stylesheet" href="../utilities/css/animate.css" />
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../utilities/css/fontawesome-all.min.css" />
+    <title>Games |</title>
 </head>
 <body>
-
+    <div class="r-app p-2">
+              <!--  ====== preloader=============================================  -->
+              <div id="preloader">
+                <div id="loading">
+                    <div id="loading-center">
+                        <div id="loading-center-absolute">
+                            <div class="object" id="object_one"></div>
+                            <div class="object" id="object_two"></div>
+                            <div class="object" id="object_three"></div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /preloader -->
+    
+            <header class="header h-16 items-center flex flex-row ">
+                <nav class="flex flex-row justify-between w-full px-4">
+                    <div class="logo">
+                        Logo
+                    </div>
+                    <ul class="hidden md:flex md:flex-row md:justify-center md:gap-4 md:flex-1 ">
+                        <li>
+                            <a href="#" class="text-base">create Your Avatar</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base">Explore Worlds</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base">Shop Fashion</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base">Join the community</a>
+                        </li>
+                        <li>
+                            <a href="./Games/" class="text-base">Play Games</a>
+                        </li>
+                    </ul>
+                    <div class="flex flex-row gap-4 items-center">
+                        <div class="pointer" data-modal-target="authentication-modal"
+                            data-modal-toggle="authentication-modal">
+                            <i class="fa fa-user-circle"></i> <span class="text-base">Login</span>
+                        </div>
+                        <div class="hidden md:block">
+                            <i class="fa fa-language"></i> <span class="text-base">Eng (UK)</span>
+                        </div>
+                        <div class="md:hidden text-2xl pointer" id="open-sidebar">
+                            &#9776;
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <div id="sidebar" class="md:hidden overflow-hidden visible z-50 h-full fixed w-72 bg-gray-500 top-0 right-[-300px] transition-all ">
+                <ul class="h-full px-3 flex flex-col gap-4 bg-red-400 py-4">
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-bold">DreamGirls</h3>
+                    </div>
+                    <li>
+                        <a href="#" class="text-base hover:text-blue-500">Create Your Avatar</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-base hover:text-blue-500">Explore Worlds</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-base hover:text-blue-500">Shop Fashion</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-base hover:text-blue-500">Join the community</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-base hover:text-blue-500">Play Games</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-base">Language</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="fixed z-10 h-0 w-0 top-0" id="cl-sidebar"></div>
+            
+        <div class="featured-game">
+            <div class="">
+                <h3 class="mx-2 md:mx-20 mt-2 text-4xl text-left font-bold">Featured game</h3>
+            </div>
+            <div class="mx-2 md:mx-20 my-6 md:flex md:flex-row gap-3 md:justify-between">
+                <div class="rounded-lg text-center items-center justify-center flex md:w-1/3 shadow-md border rounded-lg py-2" style="background-color: #2f3442;">
+                    <div class="h-56 bg-white-400 overflow-hidden w-2/3">
+                        <img src="./pacman-canvas/images/giphy.gif" class="h-56  w-64  object-cover object-top" alt="">
+                    </div>
+                    <div class="flex-col items-center justify-center items-center h-full w-1/3">
+                        <div class="">
+                            <h3 class="text-2xl font-bold mt-3 text-white">Pacman</h3>
+                        </div>
+                        <button class="mt-2 px-3 py-2 transition linear delay-150 rounded-xl text-white text-base"
+                            style="background-color: #fe9dcd;">
+                            Play Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="my-10">
+            <div class="">
+                <h3 class="mx-2 md:mx-20 mt-2 text-2xl md:text-left font-bold">Discover Latest Games</h3>
+            </div>
+            <div class="md:flex">
+                <div class="mx-2 md:mx-20 my-4 md:flex md:flex-row gap-3 md:justify-between">
+                    <div class="rounded-lg text-center shadow-md border py-2">
+                        <div class="h-56 md:w-64 bg-white-400 overflow-hidden">
+                            <img src="./pacman-canvas/images/giphy.gif" class="h-56 w-full object-cover object-top rounded-lg " alt="">
+                        </div>
+                        <div class="">
+                            <h3 class="text-lg font-bold mt-3">Pacman</h3>
+                        </div>
+                        <button class="mt-2 px-3 py-2 transition linear delay-150 rounded-xl text-white text-base"
+                            style="background-color: #fe9dcd;">
+                            Play now
+                        </button>
+                    </div>
+                </div>
+                <div class="mx-2 md:mx-20 my-6 md:flex md:flex-row gap-3 md:justify-between">
+                    <div class="rounded-lg text-center shadow-md border py-2">
+                        <div class="h-56 md:w-64 bg-white-400 overflow-hidden">
+                            <img src="./pacman-canvas/images/whac-a-mole.gif" class="h-56 w-full object-cover object-top rounded-lg " alt="">
+                        </div>
+                        <div class="">
+                            <h3 class="text-lg font-bold mt-3">Whack a mole</h3>
+                        </div>
+                        <button class="mt-2 px-3 py-2 transition linear delay-150 rounded-xl text-white text-base"
+                            style="background-color: #fe9dcd;">
+                            Play now
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="text-center my-4">
+                <button class="text-white rounded-xl px-3 py-2" style="background-color: #fe9dcd;">
+                    See more
+                </button>
+            </div> -->
+        </div>
+    </div>
+    <script src="../utilities/js/jquery.min.js"></script>
+    <script src="../utilities/js/aos.js"></script>
+    <script src="../utilities/js/slick.min.js"></script>
+    <script src="../utilities/js/typer.js"></script>
+    <script src="../utilities/js/waypoint.js"></script>
+    <script src="../utilities/js/counterup-min.js"></script>
+    <script src="../utilities/js/vanilla-tilt.min.js"></script>
+    <!-- <script src="./utilities/js/parallax.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     <script>
-    class Example extends Phaser.Scene
-    {
-        preload ()
-        {
-            this.load.setBaseURL('https://labs.phaser.io');
+        AOS.init();
 
-            this.load.image('sky', 'assets/skies/space3.png');
-            this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-            this.load.image('red', 'assets/particles/red.png');
-        }
+        $("#open-sidebar").on('click', (e) => {
+            $('#sidebar').toggleClass('right-[-300px]');
+            $('#sidebar').toggleClass('right-0');
 
-        create ()
-        {
-            this.add.image(400, 300, 'sky');
+            $('#cl-sidebar').addClass('h-full w-full');
+        });
 
-            const particles = this.add.particles(0, 0, 'red', {
-                speed: 100,
-                scale: { start: 1, end: 0 },
-                blendMode: 'ADD'
-            });
+        $('#cl-sidebar').on('click', (e)=> {
+            $('#sidebar').toggleClass('right-[-300px]');
+            $('#sidebar').toggleClass('right-0');
 
-            const logo = this.physics.add.image(400, 100, 'logo');
-
-            logo.setVelocity(100, 200);
-            logo.setBounce(1, 1);
-            logo.setCollideWorldBounds(true);
-
-            particles.startFollow(logo);
-        }
-    }
-
-    const config = {
-        type: Phaser.AUTO,
-        width: 800,
-        height: 600,
-        scene: Example,
-        physics: {
-            default: 'arcade',
-            arcade: {
-                gravity: { y: 200 }
-            }
-        }
-    };
-
-    const game = new Phaser.Game(config);
+            $('#cl-sidebar').removeClass('h-full w-full');
+        });
     </script>
-
 </body>
 </html>

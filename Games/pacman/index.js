@@ -207,10 +207,10 @@ const keys = {
 function circleCollision({circle, rect}) {
     const padding = (Boundary.width * 0.5) - circle.radius - 1;
     return (
-        circle.position.y - circle.radius + circle.velocity.y <= rect.position.y + rect.height  &&
-        circle.position.x + circle.radius + circle.velocity.x >= rect.position.x  &&
-        circle.position.y + circle.radius + circle.velocity.y >=rect.position.y  &&
-        circle.position.x - circle.radius + circle.velocity.x <= rect.position.x + rect.width 
+        circle.position.y - circle.radius + circle.velocity.y <= rect.position.y + rect.height &&
+        circle.position.x + circle.radius + circle.velocity.x >= rect.position.x &&
+        circle.position.y + circle.radius + circle.velocity.y >=rect.position.y &&
+        circle.position.x - circle.radius + circle.velocity.x <= rect.position.x + rect.width
     )
 }
 let lastTime = 0;
@@ -407,7 +407,7 @@ function animate(timestamp) {
         }
 
         // console.log(collsions)
-        console.log(ghost.prevCol)
+        // console.log(ghost.prevCol)
 
         if(JSON.stringify(collsions) !== JSON.stringify(ghost.prevCol)) {
             if(ghost.velocity.x > 0) {
@@ -426,8 +426,6 @@ function animate(timestamp) {
             const pathways = ghost.prevCol.filter(collision => {
                 return !collsions.includes(collision);
             });
-
-            console.log({pathways});
 
             const direction = pathways[Math.floor(Math.random() * pathways.length)];
             switch(direction) {
@@ -456,11 +454,12 @@ function animate(timestamp) {
         
     // }); 
 
-    // requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
 }
-setInterval(()=> {
-    animate(0);
-}, 100);
+animate(0);
+// setInterval(()=> {
+//     animate(0);
+// }, 100);
 
 
 let lastKey = '';
@@ -507,5 +506,4 @@ function startGame() {
 }
 window.onload = () => {
     startGame();
-
 }

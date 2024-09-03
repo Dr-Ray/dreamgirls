@@ -2,7 +2,7 @@ const canvas = document.querySelector('#canvas');
 let scoreEl = document.querySelector('#score');
 const c = canvas.getContext('2d');
 
-canvas.height = 400;
+canvas.height = innerHeight * (2/3);
 canvas.width = innerWidth;
 
 let beginSound = new Audio();
@@ -12,16 +12,15 @@ let sirenSound = new Audio();
 sirenSound.src = './Pacman_Siren_Sound_Effect.mp3';
 
 let chompSound = new Audio();
-
 let score = 0;
 
 class Boundary {
-    static width = canvas.width / 23;
-    static height = canvas.height / 15;
-    constructor({position}) {
+    static width = Math.floor(canvas.width / 23);
+    static height = Math.floor(canvas.height / 15);
+    constructor({ position }) {
         this.position = position;
-        this.width = canvas.width / 23;
-        this.height = canvas.height / 15;
+        this.width = Boundary.width;
+        this.height = Boundary.height;
     }
 
     draw() {
@@ -31,32 +30,46 @@ class Boundary {
 }
 
 class Player {
-    constructor({position, velocity}) {
+    constructor({ position, velocity }) {
         this.position = position;
         this.velocity = velocity;
-        this.radius = 12;
+        this.radius = 10;
+        this.radians = 0.75;
+        this.openRate = 0.12;
+        this.angle = 0;
     }
 
     draw() {
         c.fillStyle = 'yellow';
+        c.save();
+        c.translate(this.position.x, this.position.y)
+        c.rotate(this.angle);
+        c.translate(-this.position.x, -this.position.y)
         c.beginPath();
-        c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
+        c.arc(this.position.x, this.position.y, this.radius, this.radians, Math.PI * 2 - this.radians)
+        c.lineTo(this.position.x, this.position.y)
         c.fill();
         c.closePath();
+        c.restore()
     }
 
-    update(){
+    update() {
         this.draw();
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
+
+        if (this.radians < 0 || this.radians > 0.75) {
+            this.openRate = -this.openRate;
+        }
+        this.radians += this.openRate;
     }
 }
 
 class Ghost {
-    constructor({position, velocity, color="red"}) {
+    constructor({ position, velocity, color = "red" }) {
         this.position = position;
         this.velocity = velocity;
-        this.radius = 12;
+        this.radius = 9;
         this.color = color;
         this.prevCol = [];
     }
@@ -69,7 +82,7 @@ class Ghost {
         c.closePath();
     }
 
-    update(){
+    update() {
         this.draw();
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
@@ -77,7 +90,7 @@ class Ghost {
 }
 
 class Pellet {
-    constructor({position}) {
+    constructor({ position }) {
         this.position = position;
         this.radius = 3;
     }
@@ -92,7 +105,7 @@ class Pellet {
 }
 
 class PowerUp {
-    constructor({position}) {
+    constructor({ position }) {
         this.position = position;
         this.radius = 6;
     }
@@ -107,21 +120,21 @@ class PowerUp {
 }
 
 const map = [
-    ['0', '0', '0', '0', '0','0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
-    ['0', '1', '1', '1', '1','1', '0', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '2', '0'],
-    ['0', '1', '1', '1', '1','2', '0', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '0'],
-    ['0', '1', '1', '1', '1','0', '0', '0', '1', '1', '1', '1', '0', '0', '0', '1', '1', '1', '1', '1', '1', '1', '0'],
-    ['0', '1', '1', '1', '1','1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0'],
-    ['0', '0', '1', '1', '1','1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '0', '0'],
-    ['3', '3', '1', '1', '1','1', '1', '1', '1', '0', '0', '1', '1', '0', '0', '1', '1', '0', '1', '1', '1', '3', '3'],
-    ['3', '3', '1', '1', '1','1', '1', '1', '1', '0', '1', '1', '1', '1', '0', '1', '1', '0', '0', '0', '1', '3', '3'],
-    ['3', '3', '1', '1', '0','0', '0', '1', '1', '0', '1', '1', '1', '1', '0', '1', '1', '0', '1', '1', '1', '3', '3'],
-    ['0', '0', '1', '1', '1','0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1', '1', '0', '1', '1', '1', '0', '0'],
-    ['0', '1', '1', '1', '1','0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0'],
-    ['0', '1', '1', '1', '1','1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0'],
-    ['0', '1', '1', '0', '1','1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '0'],
-    ['0', '2', '1', '0', '1','1', '1', '1', '0', '1', '1', '1', '2', '1', '1', '1', '1', '1', '1', '0', '1', '1', '0'],
-    ['0', '0', '0', '0', '0','0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+    ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
+    ['0', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '2', '0'],
+    ['0', '1', '1', '1', '1', '2', '0', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '0'],
+    ['0', '1', '1', '1', '1', '0', '0', '0', '1', '1', '1', '1', '0', '0', '0', '1', '1', '1', '1', '1', '1', '1', '0'],
+    ['0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0'],
+    ['0', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '0', '0'],
+    ['3', '3', '1', '1', '1', '1', '1', '1', '1', '0', '0', '1', '1', '0', '0', '1', '1', '0', '1', '1', '1', '3', '3'],
+    ['3', '3', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '0', '1', '1', '0', '0', '0', '1', '3', '3'],
+    ['3', '3', '1', '1', '0', '0', '0', '1', '1', '0', '1', '1', '1', '1', '0', '1', '1', '0', '1', '1', '1', '3', '3'],
+    ['0', '0', '1', '1', '1', '0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1', '1', '0', '1', '1', '1', '0', '0'],
+    ['0', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0'],
+    ['0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0'],
+    ['0', '1', '1', '0', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '0'],
+    ['0', '2', '1', '0', '1', '1', '1', '1', '0', '1', '1', '1', '2', '1', '1', '1', '1', '1', '1', '0', '1', '1', '0'],
+    ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
 ];
 
 const boundaries = [];
@@ -129,26 +142,37 @@ const pellets = [];
 const powerUps = [];
 const ghosts = [
     new Ghost({
-        position:{
-            x:Boundary.width * 10 + Boundary.width * 0.5,
-            y:Boundary.height * 4 + Boundary.height * 0.5
+        position: {
+            x: Boundary.width * 10 + Boundary.width * 0.5,
+            y: Boundary.height * 7 + Boundary.height * 0.5
         },
-        velocity:{
-            x:2,
-            y:0
+        velocity: {
+            x: 0,
+            y: 0
         }
+    }),
+    new Ghost({
+        position: {
+            x: Boundary.width * 11 + Boundary.width * 0.5,
+            y: Boundary.height * 7 + Boundary.height * 0.5
+        },
+        velocity: {
+            x: 1,
+            y: 0
+        },
+        color: "#92074d"
     })
 ];
 
 map.forEach((row, i) => {
     row.forEach((symbol, j) => {
-        switch(symbol) {
+        switch (symbol) {
             case '0':
                 boundaries.push(
                     new Boundary({
-                        position:{
-                            x:Boundary.width * j,
-                            y:Boundary.height * i
+                        position: {
+                            x: Boundary.width * j,
+                            y: Boundary.height * i
                         }
                     })
                 );
@@ -156,9 +180,9 @@ map.forEach((row, i) => {
             case '1':
                 pellets.push(
                     new Pellet({
-                        position:{
-                            x:(Boundary.width * j) + Boundary.width * 0.5,
-                            y:(Boundary.height * i) + Boundary.height * 0.5
+                        position: {
+                            x: (Boundary.width * j) + Boundary.width * 0.5,
+                            y: (Boundary.height * i) + Boundary.height * 0.5
                         }
                     })
                 );
@@ -166,9 +190,9 @@ map.forEach((row, i) => {
             case '2':
                 powerUps.push(
                     new PowerUp({
-                        position:{
-                            x:(Boundary.width * j) + Boundary.width * 0.5,
-                            y:(Boundary.height * i) + Boundary.height * 0.5
+                        position: {
+                            x: (Boundary.width * j) + Boundary.width * 0.5,
+                            y: (Boundary.height * i) + Boundary.height * 0.5
                         }
                     })
                 );
@@ -179,38 +203,38 @@ map.forEach((row, i) => {
 
 
 const player = new Player({
-    position:{
-        x:Boundary.width + Boundary.width * 0.5,
-        y:Boundary.height + Boundary.height * 0.5
+    position: {
+        x: Boundary.width + Boundary.width * 0.5,
+        y: Boundary.height + Boundary.height * 0.5
     },
-    velocity:{
-        x:0,
-        y:0
+    velocity: {
+        x: 0,
+        y: 0
     }
 });
- 
+
 const keys = {
-    up:{
-        pressed:false
+    up: {
+        pressed: false
     },
-    left:{
-        pressed:false
+    left: {
+        pressed: false
     },
-    down:{
-        pressed:false
+    down: {
+        pressed: false
     },
-    right:{
-        pressed:false
+    right: {
+        pressed: false
     }
 }
 
-function circleCollision({circle, rect}) {
-    const padding = (Boundary.width * 0.5) - circle.radius - 1;
+function circleCollision({ circle, rect }) {
+    const padding = (Boundary.width * 0.5) - circle.radius - 0.1;
     return (
-        circle.position.y - circle.radius + circle.velocity.y <= rect.position.y + rect.height &&
-        circle.position.x + circle.radius + circle.velocity.x >= rect.position.x &&
-        circle.position.y + circle.radius + circle.velocity.y >=rect.position.y &&
-        circle.position.x - circle.radius + circle.velocity.x <= rect.position.x + rect.width
+        circle.position.y - circle.radius + circle.velocity.y <= rect.position.y + rect.height + padding &&
+        circle.position.x + circle.radius + circle.velocity.x >= rect.position.x - padding &&
+        circle.position.y + circle.radius + circle.velocity.y >= rect.position.y - padding &&
+        circle.position.x - circle.radius + circle.velocity.x <= rect.position.x + rect.width + padding
     )
 }
 let lastTime = 0;
@@ -219,54 +243,57 @@ function animate(timestamp) {
     lastTime = timestamp;
     c.clearRect(0, 0, canvas.width, canvas.height);
 
-    if(keys.up.pressed && lastKey == 'up') {
+    if (keys.up.pressed && lastKey == 'up') {
         player.velocity.x = 0;
-        for(let i=0;i<boundaries.length; i+=1){
+        for (let i = 0; i < boundaries.length; i += 1) {
             const boundary = boundaries[i];
-            if(circleCollision({
-                circle: {...player, velocity: {
-                    x:0,
-                    y:-3
-                }},
+            if (circleCollision({
+                circle: {
+                    ...player, velocity: {
+                        x: 0,
+                        y: -3
+                    }
+                },
                 rect: boundary
-            }))
-            {
+            })) {
                 player.velocity.y = 0;
                 break;
-            }else {
+            } else {
                 player.velocity.y = -3;
             }
         }
-    }else if(keys.down.pressed && lastKey == 'down'){
+    } else if (keys.down.pressed && lastKey == 'down') {
         player.velocity.x = 0;
-        for(let i=0;i<boundaries.length; i+=1){
+        for (let i = 0; i < boundaries.length; i += 1) {
             const boundary = boundaries[i];
-            if(circleCollision({
-                circle: {...player, velocity: {
-                    x:0,
-                    y:2
-                }},
+            if (circleCollision({
+                circle: {
+                    ...player, velocity: {
+                        x: 0,
+                        y: 2
+                    }
+                },
                 rect: boundary
-            }))
-            {
+            })) {
                 player.velocity.y = 0;
                 break;
-            }else {
+            } else {
                 player.velocity.y = 3;
             }
         }
-    }else if(keys.left.pressed && lastKey == 'left'){
+    } else if (keys.left.pressed && lastKey == 'left') {
         player.velocity.y = 0;
-        for(let i=0;i<boundaries.length; i+=1){
+        for (let i = 0; i < boundaries.length; i += 1) {
             const boundary = boundaries[i];
-            if(circleCollision({
-                circle: {...player, velocity: {
-                    x:-3,
-                    y:0
-                }},
+            if (circleCollision({
+                circle: {
+                    ...player, velocity: {
+                        x: -3,
+                        y: 0
+                    }
+                },
                 rect: boundary
-            }))
-            {
+            })) {
                 player.velocity.x = 0;
                 break;
             }
@@ -274,87 +301,90 @@ function animate(timestamp) {
                 player.velocity.x = -3;
             }
         }
-    }else if(keys.right.pressed && lastKey == 'right'){
+    } else if (keys.right.pressed && lastKey == 'right') {
         player.velocity.y = 0;
-        for(let i=0;i<boundaries.length; i+=1){
+        for (let i = 0; i < boundaries.length; i += 1) {
             const boundary = boundaries[i];
-            if(circleCollision({
-                circle: {...player, velocity: {
-                    x:3,
-                    y:0
-                }},
+            if (circleCollision({
+                circle: {
+                    ...player, velocity: {
+                        x: 3,
+                        y: 0
+                    }
+                },
                 rect: boundary
-            }))
-            {
+            })) {
                 player.velocity.x = 0;
                 break;
-            }else {
+            } else {
                 player.velocity.x = 3;
             }
         }
     }
 
-    if(player.position.x + player.radius + 0.01 < 0) {
+    if (player.position.x + player.radius + 0.01 < 0) {
         player.position.x = canvas.width - player.radius;
-    }else if(player.position.x + player.radius + 0.01 > canvas.width) {
+    } else if (player.position.x + player.radius + 0.01 > canvas.width) {
         player.position.x = 0;
     }
 
-    for(let i=pellets.length -1;0 <= i;i--) {
+    for (let i = pellets.length - 1; 0 <= i; i--) {
         const pellet = pellets[i];
         pellet.draw();
-        if(Math.hypot(
+        if (Math.hypot(
             pellet.position.x - player.position.x,
             pellet.position.y - player.position.y
         ) < pellet.radius + player.radius) {
             pellets.splice(i, 1);
-            score +=10;
+            score += 10;
             scoreEl.innerHTML = score;
         }
     }
 
-    for(let i=powerUps.length-1; 0<=i; i--) {
+    for (let i = powerUps.length - 1; 0 <= i; i--) {
         const powerUp = powerUps[i];
         powerUp.draw();
-        if(Math.hypot(
+        if (Math.hypot(
             powerUp.position.x - player.position.x,
             powerUp.position.y - player.position.y
         ) < powerUp.radius + player.radius) {
             powerUps.splice(i, 1);
-            score +=50;
+            score += 50;
             scoreEl.innerHTML = score;
         }
     }
 
     boundaries.forEach(boundary => {
         boundary.draw();
-        if(circleCollision({
+        if (circleCollision({
             circle: player,
             rect: boundary
         })) {
             player.velocity.x = 0;
             player.velocity.y = 0;
         }
-    }); 
+    });
     player.update();
-    for(let i=ghosts.length-1; 0<=i; i--) {
+    for (let i = ghosts.length - 1; 0 <= i; i--) {
         const ghost = ghosts[i];
         ghost.update();
-        
-        if(ghost.position.x + ghost.radius + 0.01 < 0) {
+
+        if (ghost.position.x + ghost.radius + 0.01 < 0) {
             ghost.position.x = canvas.width - ghost.radius;
-        }else if(ghost.position.x + ghost.radius + 0.01 > canvas.width) {
+        } else if (ghost.position.x + ghost.radius + 0.01 > canvas.width) {
             ghost.position.x = 0;
         }
         const collsions = [];
         boundaries.forEach(boundary => {
-            if(
+            if (
                 !collsions.includes('right') &&
                 circleCollision({
-                    circle: {...ghost, velocity: {
-                        x:2,
-                        y:0
-                    }},
+                    circle: {
+                        ...ghost, velocity: {
+                            x: 2,
+                            y: 0
+                        }
+                    },
                     rect: boundary
                 })
             ) {
@@ -362,64 +392,67 @@ function animate(timestamp) {
                 ghost.velocity.x = 0;
             }
 
-            if(
+            if (
                 !collsions.includes('left') &&
                 circleCollision({
-                    circle: {...ghost, velocity: {
-                        x:-2,
-                        y:0
-                    }},
+                    circle: {
+                        ...ghost, velocity: {
+                            x: -2,
+                            y: 0
+                        }
+                    },
                     rect: boundary
                 }
-            )) {
+                )) {
                 collsions.push('left');
             }
 
-            if(
+            if (
                 !collsions.includes('up') &&
                 circleCollision({
-                    circle: {...ghost, velocity: {
-                        x:0,
-                        y:-2
-                    }},
+                    circle: {
+                        ...ghost, velocity: {
+                            x: 0,
+                            y: -2
+                        }
+                    },
                     rect: boundary
                 })
             ) {
                 collsions.push('up');
             }
 
-            if(
+            if (
                 !collsions.includes('down') &&
                 circleCollision({
-                    circle: {...ghost, velocity: {
-                        x:0,
-                        y:2
-                    }},
+                    circle: {
+                        ...ghost, velocity: {
+                            x: 0,
+                            y: 2
+                        }
+                    },
                     rect: boundary
                 })
             ) {
                 collsions.push('down');
             }
         });
-        
-        if(collsions.length > ghost.prevCol.length){
+
+        if (collsions.length > ghost.prevCol.length) {
             ghost.prevCol = collsions;
         }
 
-        // console.log(collsions)
-        // console.log(ghost.prevCol)
-
-        if(JSON.stringify(collsions) !== JSON.stringify(ghost.prevCol)) {
-            if(ghost.velocity.x > 0) {
+        if (JSON.stringify(collsions) !== JSON.stringify(ghost.prevCol)) {
+            if (ghost.velocity.x > 0) {
                 ghost.prevCol.push('right');
             }
-            else if(ghost.velocity.x < 0) {
+            else if (ghost.velocity.x < 0) {
                 ghost.prevCol.push('left');
             }
-            else if(ghost.velocity.y > 0) {
+            else if (ghost.velocity.y > 0) {
                 ghost.prevCol.push('down');
             }
-            else if(ghost.velocity.y < 0) {
+            else if (ghost.velocity.y < 0) {
                 ghost.prevCol.push('up');
             }
 
@@ -428,7 +461,7 @@ function animate(timestamp) {
             });
 
             const direction = pathways[Math.floor(Math.random() * pathways.length)];
-            switch(direction) {
+            switch (direction) {
                 case 'down':
                     ghost.velocity.x = 0;
                     ghost.velocity.y = 2;
@@ -446,25 +479,25 @@ function animate(timestamp) {
                     ghost.velocity.y = 0;
                     break;
             }
-            // console.log({pathways});
             ghost.prevCol = [];
         }
     }
-    // ghosts.forEach(ghost => {
-        
-    // }); 
-
+    if (player.velocity.x > 0) {
+        player.angle = 0;
+    } else if (player.velocity.x < 0) {
+        player.angle = Math.PI;
+    } else if (player.velocity.y > 0) {
+        player.angle = Math.PI * 0.5;
+    } else if (player.velocity.y < 0) {
+        player.angle = Math.PI * 1.5;
+    }
     requestAnimationFrame(animate);
 }
 animate(0);
-// setInterval(()=> {
-//     animate(0);
-// }, 100);
-
 
 let lastKey = '';
-window.addEventListener('keydown', ({key}) => {
-    switch(key) {
+window.addEventListener('keydown', ({ key }) => {
+    switch (key) {
         case 'ArrowUp':
             keys.up.pressed = true;
             lastKey = 'up'
@@ -483,8 +516,8 @@ window.addEventListener('keydown', ({key}) => {
             break;
     }
 });
-window.addEventListener('keyup', ({key}) => {
-    switch(key) {
+window.addEventListener('keyup', ({ key }) => {
+    switch (key) {
         case 'ArrowUp':
             keys.up.pressed = false;
             break;
@@ -500,10 +533,8 @@ window.addEventListener('keyup', ({key}) => {
     }
 });
 
-function startGame() {
-    beginSound.play();
-    // sirenSound.loop = true;
-}
 window.onload = () => {
-    startGame();
+    setTimeout(()=> {
+        beginSound.play();
+    }, 3500);
 }

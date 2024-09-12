@@ -1,29 +1,52 @@
 <html>
-   <head> 
-       <link rel="stylesheet" type="text/css" href="./style.css">
-       
-    </head>
-    <title> Dress Up Game</title>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+    <style>
+        .small-50 {
+            height: auto;
+            width: 60px;
+        }
+    </style>
+</head>
+<title> Dress Up Game</title>
+
 <body>
     <div id="container">
-    <div id="background">
-    <div id="hairback"></div>    
-    <div id="man"> </div>
-    <div id="shoes"> </div>    
-    <div id="clothes"> </div>
-    <div id="hairfront"></div>
+        <div class="">
+            <div id="background" style="overflow-y: hidden;">
+                <div class="" style="position: relative;left: 20%;top: 30%;">
+                    <div id="hairback"></div>
+                    <div id="man"> </div>
+                    <div id="shoes"> </div>
+                    <div id="clothes"> </div>
+                    <div id="hairfront"></div>
+                </div>
+            </div>
+        </div>
+        <div class=""
+            style="padding:10px 0; position: absolute;bottom: 10px;width: 100%;background-color: coral;display: flex;justify-content: space-between;align-items: center;">
+            <button 
+                type="button" value="NEXT" id="nexthair"
+                style="width: 120px;height: 120px;background-color: white;border: none; border-radius: 8px;"
+                onclick="nexthair()">
+                <img src="./hair/hair-icon.png" alt="" class="small-50">
+            </button>
+            <button type="button" value="NEXT" id="nextdress"
+                style="width: 120px;height: 120px;background-color: white;border: none; border-radius: 8px;"
+                onclick="nextdress()">
+                <img src="./dress/dress1.png" alt="" class="small-50">
+            </button>
+            <button type="button" value="NEXT" id="nextshoe"
+                style="width: 120px;height: 120px;background-color: white;border: none; border-radius: 8px;"
+                onclick="nextshoe()">
+                <img src="./shoes/shoe2.png" alt="" class="small-50">
+            </button>
+        </div>
     </div>
-        
-        
-        
-        <input type="button" value="NEXT" id="nexthair" onclick="nexthair()">
-        <input type="button" value="NEXT" id="nextdress" onclick="nextdress()">
-        <input type="button" value="NEXT" id="nextshoe" onclick="nextshoe()">
-    
-    </div>
-    
+
     <script src="./code.js"></script>
-    
-    </body>
+
+</body>
 
 </html>
